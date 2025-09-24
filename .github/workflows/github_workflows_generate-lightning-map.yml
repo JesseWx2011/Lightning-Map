@@ -22,8 +22,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r scripts/requirements.txt
 
-    - name: Generate Lightning Map
-      run: python scripts/generate_map.py
+    - name: Generate Lightning Sector Maps
+      run: python scripts/generate_sector_maps.py
 
     - name: Add new lightning sector maps
       run: git add docs/lightning_maps/*.png
@@ -32,16 +32,6 @@ jobs:
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git commit -m "Update lightning sector maps"
+        git commit -m "Update lightning sector maps" || echo "No changes to commit"
         git push
       continue-on-error: true
-
-
-    - name: Commit and push generated map
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add docs/lightning_map.png
-        git commit -m "Update lightning map"
-        git push
-      continue-on-error: true # In case nothing changed
