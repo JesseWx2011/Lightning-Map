@@ -34,7 +34,6 @@ SECTORS = {
 }
 
 CITY_LABELS = [
-    # (City, Latitude, Longitude)
     ("Seattle, WA", 47.6062, -122.3321),
     ("Washington DC", 38.8951, -77.0364),
     ("Bangor, ME", 44.8012, -68.7778),
@@ -138,18 +137,24 @@ def parse_icons(text):
     print(f"Found {count} icons in the last hour.")
     return icons
 
+def get_resolution(sector_name):
+    # High resolution for small regions
+    high_res_sectors = ["Puerto Rico", "Guam", "US Mariana Islands"]
+    return '10m' if sector_name in high_res_sectors else '50m'
+
 def plot_sector_map(points, sector_name, extent):
     print(f"Plotting lightning map for {sector_name}...")
     fig = plt.figure(figsize=(10, 10))
     ax = plt.axes(projection=ccrs.Mercator())
     ax.set_extent(extent, crs=ccrs.Geodetic())
 
-    ax.add_feature(cfeature.OCEAN.with_scale('50m'), facecolor='lightblue')
-    ax.add_feature(cfeature.LAND.with_scale('50m'), facecolor='whitesmoke')
-    ax.coastlines(resolution='50m')
-    ax.add_feature(cfeature.BORDERS.with_scale('50m'))
+    res = get_resolution(sector_name)
+    ax.add_feature(cfeature.OCEAN.with_scale(res), facecolor='lightblue')
+    ax.add_feature(cfeature.LAND.with_scale(res), facecolor='whitesmoke')
+    ax.coastlines(resolution=res)
+    ax.add_feature(cfeature.BORDERS.with_scale(res))
     try:
-        ax.add_feature(cfeature.STATES.with_scale('50m'))
+        ax.add_feature(cfeature.STATES.with_scale(res))
     except Exception:
         pass
 
