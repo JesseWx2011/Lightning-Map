@@ -142,9 +142,9 @@ def get_resolution(sector_name):
     high_res_sectors = ["Puerto Rico", "Guam", "US Mariana Islands"]
     return '10m' if sector_name in high_res_sectors else '50m'
 
-def plot_sector_map(points, sector_name, extent):
+def plot_sector_map(points, sector_name, extent, last_updated_utc):
     print(f"Plotting lightning map for {sector_name}...")
-    fig = plt.figure(figsize=(10, 10))
+    fig = plt.figure(figsize=(19.2, 10.8), dpi=100) # 1920x1080
     ax = plt.axes(projection=ccrs.Mercator())
     ax.set_extent(extent, crs=ccrs.Geodetic())
 
@@ -177,6 +177,10 @@ def plot_sector_map(points, sector_name, extent):
             ax.plot(city_lon, city_lat, marker='o', color='blue', markersize=4, transform=ccrs.Geodetic(), zorder=5)
             ax.text(city_lon, city_lat, city, fontsize=6, color='black', weight='bold',
                     transform=ccrs.Geodetic(), ha='left', va='bottom', zorder=6)
+
+    # Add last updated time in UTC at bottom right
+    fig.text(0.99, 0.01, f"Last updated: {last_updated_utc}", ha='right', va='bottom', fontsize=12, color='black')
+
     plt.title(f"Lightning - {sector_name} (Last Hour)")
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     fname = os.path.join(OUTPUT_DIR, f"lightning_{sector_name.replace(' ', '_')}.png")
@@ -191,8 +195,11 @@ def main():
     os.makedirs("./rootrepo/cartopy_data/", exist_ok=True)
     text = fetch_placefile(API_URL)
     points = parse_icons(text)
+    # Get current UTC time for "Last updated"
+    now_utc = datetime.utcnow()
+    last_updated_utc = now_utc.strftime("%m/%d/%Y %-I:%M:%S %p UTC") if hasattr(now_utc, 'strftime') else now_utc.strftime("%m/%d/%Y %I:%M:%S %p UTC")
     for sector_name, extent in SECTORS.items():
-        plot_sector_map(points, sector_name, extent)
+        plot_sector_map(points, sector_name, extent, last_updated_utc)
     print("All sector maps completed.")
 
 if __name__ == "__main__":
