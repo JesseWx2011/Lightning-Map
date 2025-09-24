@@ -4,14 +4,19 @@ import matplotlib.pyplot as plt
 import re
 import os
 
-API_URL = "https://corsproxy.io/?url=https://saratoga-weather.org/USA-blitzortung/placefile.txt"
+API_URL = "https://saratoga-weather.org/USA-blitzortung/placefile.txt"  # Remove corsproxy
 OUTPUT_PATH = "docs/lightning_map.png"
 
 def fetch_placefile(url):
-    resp = requests.get(url)
-    resp.raise_for_status()
-    return resp.text
-
+    try:
+        resp = requests.get(url)
+        resp.raise_for_status()
+        return resp.text
+    except requests.exceptions.HTTPError as e:
+        print(f"HTTP error: {e}")
+        print(f"Response text: {resp.text}")
+        return ""
+        
 def parse_icons(text):
     # Matches lines like: Icon: lat,lon,0,1,9,Blitzortung @ time
     icons = []
