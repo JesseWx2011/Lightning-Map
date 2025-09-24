@@ -25,6 +25,18 @@ jobs:
     - name: Generate Lightning Map
       run: python scripts/generate_map.py
 
+    - name: Add new lightning sector maps
+      run: git add docs/lightning_maps/*.png
+
+    - name: Commit and push generated maps
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git commit -m "Update lightning sector maps"
+        git push
+      continue-on-error: true
+
+
     - name: Commit and push generated map
       run: |
         git config --global user.name "github-actions[bot]"
