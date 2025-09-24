@@ -12,6 +12,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Set CARTOPY_DATA_DIR environment variable
+      run: echo "CARTOPY_DATA_DIR=./rootrepo/cartopy_data/" >> $GITHUB_ENV
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
