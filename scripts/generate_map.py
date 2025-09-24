@@ -138,15 +138,44 @@ def parse_icons(text):
     return icons
 
 def get_resolution(sector_name):
-    # High resolution for small regions
     high_res_sectors = ["Puerto Rico", "Guam", "US Mariana Islands"]
     return '10m' if sector_name in high_res_sectors else '50m'
 
 def plot_sector_map(points, sector_name, extent, last_updated_utc):
     print(f"Plotting lightning map for {sector_name}...")
-    fig = plt.figure(figsize=(19.2, 10.8), dpi=100) # 1920x1080
+    fig = plt.figure(figsize=(19.2, 10.8), dpi=100)  # 1920x1080
+
+    # Calculate padded extent to center the region
+    lon_min, lon_max, lat_min, lat_max = extent
+    region_width = lon_max - lon_min
+    region_height = lat_max - lat_min
+    img_width, img_height = 1920, 1080
+    img_aspect = img_width / img_height
+    region_aspect = region_width / region_height
+
+    # Centering logic: pad longitude or latitude so region is centered
+    center_lon = (lon_min + lon_max) / 2
+    center_lat = (lat_min + lat_max) / 2
+
+    if region_aspect > img_aspect:
+        # Region is wider than image aspect; pad latitude
+        new_height = region_width / img_aspect
+        pad = (new_height - region_height) / 2
+        lat_min_pad = center_lat - new_height / 2
+        lat_max_pad = center_lat + new_height / 2
+        lon_min_pad = lon_min
+        lon_max_pad = lon_max
+    else:
+        # Region is taller than image aspect; pad longitude
+        new_width = region_height * img_aspect
+        pad = (new_width - region_width) / 2
+        lon_min_pad = center_lon - new_width / 2
+        lon_max_pad = center_lon + new_width / 2
+        lat_min_pad = lat_min
+        lat_max_pad = lat_max
+
     ax = plt.axes(projection=ccrs.Mercator())
-    ax.set_extent(extent, crs=ccrs.Geodetic())
+    ax.set_extent([lon_min_pad, lon_max_pad, lat_min_pad, lat_max_pad], crs=ccrs.Geodetic())
 
     res = get_resolution(sector_name)
     ax.add_feature(cfeature.OCEAN.with_scale(res), facecolor='lightblue')
@@ -189,6 +218,7 @@ def plot_sector_map(points, sector_name, extent, last_updated_utc):
     plt.close(fig)
     print(f"Map for {sector_name} saved successfully.")
 
+    
 def main():
     print("Starting sector lightning map generation...")
     os.makedirs(OUTPUT_DIR, exist_ok=True)
