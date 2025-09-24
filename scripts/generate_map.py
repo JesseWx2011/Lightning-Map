@@ -1,16 +1,17 @@
+import os
+os.environ["CARTOPY_DATA_DIR"] = "./rootrepo/cartopy_data/"
 import requests
 import cartopy.crs as ccrs
 import cartopy
+import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 import re
-import os
 from datetime import datetime, timedelta
 import pytz
 
 API_URL = "https://saratoga-weather.org/USA-blitzortung/placefile.txt"
 OUTPUT_DIR = "docs/lightning_maps"
 
-# Define sector extents: {sector_name: [lon_min, lon_max, lat_min, lat_max]}
 SECTORS = {
     "Southeast": [-90, -75, 24, 36],
     "Northeast": [-80, -66, 39, 47],
@@ -76,14 +77,15 @@ def plot_sector_map(points, sector_name, extent):
     ax = plt.axes(projection=ccrs.Mercator())
     ax.set_extent(extent, crs=ccrs.Geodetic())
 
-    ax.add_feature(cartopy.feature.OCEAN, facecolor='lightblue')
-    ax.add_feature(cartopy.feature.LAND, facecolor='whitesmoke')
-    ax.coastlines()
-    ax.add_feature(cartopy.feature.BORDERS)
+    # Use lower-res features for faster rendering and smaller downloads
+    ax.add_feature(cfeature.OCEAN.with_scale('110m'), facecolor='lightblue')
+    ax.add_feature(cfeature.LAND.with_scale('110m'), facecolor='whitesmoke')
+    ax.coastlines(resolution='110m')
+    ax.add_feature(cfeature.BORDERS.with_scale('110m'))
     try:
-        ax.add_feature(cartopy.feature.STATES)
+        ax.add_feature(cfeature.STATES.with_scale('50m'))
     except Exception:
-        pass  # Some regions (islands) don't have states
+        pass
 
     filtered_points = [(lat, lon, t) for lat, lon, t in points
                       if extent[2] <= lat <= extent[3] and extent[0] <= lon <= extent[1]]
@@ -108,6 +110,7 @@ def plot_sector_map(points, sector_name, extent):
 def main():
     print("Starting sector lightning map generation...")
     os.makedirs(OUTPUT_DIR, exist_ok=True)
+    os.makedirs("./rootrepo/cartopy_data/", exist_ok=True)
     text = fetch_placefile(API_URL)
     points = parse_icons(text)
     for sector_name, extent in SECTORS.items():
