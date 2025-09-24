@@ -179,7 +179,7 @@ def plot_sector_map(points, sector_name, extent, last_updated_utc):
 
     res = get_resolution(sector_name)
     ax.add_feature(cfeature.OCEAN.with_scale(res), facecolor='lightblue')
-    ax.add_feature(cfeature.LAND.with_scale(res), facecolor='whitesmoke')
+    ax.add_feature(cfeature.LAND.with_scale(res), facecolor='tan')
     ax.coastlines(resolution=res)
     ax.add_feature(cfeature.BORDERS.with_scale(res))
     try:
@@ -204,7 +204,7 @@ def plot_sector_map(points, sector_name, extent, last_updated_utc):
     for city, city_lat, city_lon in CITY_LABELS:
         if extent[2] <= city_lat <= extent[3] and extent[0] <= city_lon <= extent[1]:
             ax.plot(city_lon, city_lat, marker='o', color='blue', markersize=4, transform=ccrs.Geodetic(), zorder=5)
-            ax.text(city_lon, city_lat, city, fontsize=6, color='black', weight='bold',
+            ax.text(city_lon, city_lat, city, fontsize=9, color='black', weight='bold',
                     transform=ccrs.Geodetic(), ha='left', va='bottom', zorder=6)
 
     # Add last updated time in UTC at bottom right
