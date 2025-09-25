@@ -49,7 +49,7 @@ jobs:
 
       # 6️⃣ Add generated radar map to Git
       - name: Add new radar map
-        run: git add docs/radar_maps/latest_radar.png
+        run: git add docs/radar_maps/KMOB_radar.png
 
       # 7️⃣ Commit and push radar map
       - name: Commit and push radar map
