@@ -3,3 +3,6 @@ numpy
 cartopy
 matplotlib
 requests
+pytz
+setuptools
+wheel
