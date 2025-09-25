@@ -60,34 +60,24 @@ def plot_radar_level3(file_obj):
     fig, ax = plt.subplots(figsize=(12, 10), subplot_kw={'projection': ccrs.LambertConformal()})
     ax.set_extent([cent_lon-2, cent_lon+2, cent_lat-2, cent_lat+2], crs=ccrs.PlateCarree())
 
-    # Colormap (default NWS reflectivity)
+# Colormap
     norm, cmap = colortables.get_with_steps('NWSStormClearReflectivity', -20, 0.5)
     ax.pcolormesh(lons, lats, data, norm=norm, cmap=cmap, transform=ccrs.PlateCarree())
 
-    # Add counties
+# Add counties, MetPy logo, timestamp
     ax.add_feature(USCOUNTIES, linewidth=0.5)
-
-    # Add MetPy logo
     add_metpy_logo(fig)
 
-    # Handle prod_time robustly
-    prod_time = f.metadata.get('prod_time')
-    if isinstance(prod_time, str):
-        prod_time = datetime.fromisoformat(prod_time)
-    elif not isinstance(prod_time, datetime):
-        # fallback: convert timestamp to datetime
-        prod_time = datetime.utcfromtimestamp(prod_time)
-
+    prod_time = f.metadata['prod_time']
     vtime_utc = prod_time.astimezone(timezone.utc)
+    add_timestamp(ax, vtime_utc, y=0.02, high_contrast=True)
 
-    # Add timestamp (pass datetime object, not string)
-    add_timestamp(ax, vtime_utc, y=0.02, high_contrast=True, time_format='%Y-%m-%d %H:%M:%S UTC')
-
-    # Save output
+# Save output
     out_path = os.path.join(OUTPUT_DIR, "latest_radar.png")
     plt.savefig(out_path, bbox_inches='tight')
     plt.close(fig)
     print(f"Radar map saved to {out_path}")
+
 
 def main():
     print("Fetching latest N0B file...")
