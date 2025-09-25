@@ -45,3 +45,4 @@ jobs:
       # 6️⃣ Run radar map script
       - name: Run Radar Map
         run: python scripts/radarmap.py
+
