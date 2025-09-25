@@ -1,3 +1,5 @@
+metpy
+numpy
 cartopy
 matplotlib
 requests
