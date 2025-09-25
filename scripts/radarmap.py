@@ -80,10 +80,11 @@ def plot_radar_level3(file_obj):
 
     # Save output with timestamp
     timestamp_str = vtime_utc.strftime("%Y%m%d_%H%M%S")
-    out_path = os.path.join(OUTPUT_DIR, f"KMOB_radar.png")
+    out_path = os.path.join(OUTPUT_DIR, "KMOB_radar.png")
     plt.savefig(out_path, bbox_inches='tight')
     plt.close(fig)
     print(f"Radar map saved to {out_path}")
+
 
 
 def main():
