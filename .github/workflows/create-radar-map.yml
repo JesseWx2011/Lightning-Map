@@ -2,7 +2,7 @@ name: Generate Radar Map
 
 on:
   schedule:
-    - cron: '*/5 * * * *' # Every 5 minutes
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgeos-dev libproj-dev gdal-bin libgdal-dev
 
       - name: Set CARTOPY_DATA_DIR environment variable
         run: echo "CARTOPY_DATA_DIR=./rootrepo/cartopy_data/" >> $GITHUB_ENV
