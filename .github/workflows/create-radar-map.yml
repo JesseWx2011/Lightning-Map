@@ -44,14 +44,18 @@ jobs:
             pip install -r requirements.txt
 
       # 5️⃣ Run radar map script
-      - name: Run Radar Map
+      - name: Generate Radar Map
         run: python scripts/radarmap.py
 
-      # 6️⃣ Upload radar map as artifact
-      - name: Upload radar map
-        uses: actions/upload-artifact@v4
-        with:
-          name: radar-map
-          path: docs/radar_maps/latest_radar.png
-          overwrite: true
+      # 6️⃣ Add generated radar map to Git
+      - name: Add new radar map
+        run: git add docs/radar_maps/latest_radar.png
 
+      # 7️⃣ Commit and push radar map
+      - name: Commit and push radar map
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update radar map" || echo "No changes to commit"
+          git push
+        continue-on-error: true
