@@ -53,4 +53,5 @@ jobs:
         with:
           name: radar-map
           path: docs/radar_maps/latest_radar.png
+          overwrite: true
 
