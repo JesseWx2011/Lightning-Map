@@ -24,13 +24,17 @@ def plot_radar_level3(file_obj):
     """Open Level3 file and plot radar reflectivity."""
     f = Level3File(file_obj)
 
-    # Use the first sym_block (common for reflectivity)
+    # Check sym_block structure
     block = f.sym_block[0][0]
     data = f.map_data(block['data'])
-    az = block['azimuths']  # degrees
-    rng = block['ranges']   # meters
 
-    # Convert to lat/lon
+    # Safer: use radial_data for azimuths/ranges
+    if hasattr(f, "radial_data"):
+        az = f.radial_data.azimuths
+        rng = f.radial_data.ranges
+    else:
+        raise ValueError("No radial data available for azimuth/range conversion")
+
     cent_lon = f.lon
     cent_lat = f.lat
     lons, lats = azimuth_range_to_lat_lon(az, rng, cent_lon, cent_lat)
@@ -42,12 +46,10 @@ def plot_radar_level3(file_obj):
     
     ax.pcolormesh(lons, lats, data, transform=ccrs.PlateCarree(), cmap='pyart_NWSRef')
     
-    # Optional: add counties and timestamp
     ax.add_feature(USCOUNTIES)
     add_metpy_logo(ax)
     add_timestamp(ax, f.vtime, y=0.02, high_contrast=True)
     
-    # Save output
     out_path = os.path.join(OUTPUT_DIR, "latest_radar.png")
     plt.savefig(out_path, bbox_inches='tight')
     plt.close(fig)
