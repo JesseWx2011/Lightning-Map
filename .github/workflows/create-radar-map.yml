@@ -54,8 +54,10 @@ jobs:
       # 7️⃣ Commit and push radar map
       - name: Commit and push radar map
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update radar map" || echo "No changes to commit"
-          git push
-        continue-on-error: true
+             git config --global user.name "github-actions[bot]"
+             git config --global user.email "github-actions[bot]@users.noreply.github.com"
+             git fetch origin master
+             git rebase origin/master
+             git commit -m "Update radar map" || echo "No changes to commit"
+             git push origin HEAD:master
+             continue-on-error: true
