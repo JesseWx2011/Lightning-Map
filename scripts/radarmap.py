@@ -7,6 +7,8 @@ from datetime import datetime, timezone
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import numpy as np
+import cartopy.feature as cfeature
+
 
 from metpy.io import Level3File
 from metpy.calc import azimuth_range_to_lat_lon
@@ -72,6 +74,9 @@ def plot_radar_level3(file_obj):
 
     # Add counties, MetPy logo, timestamp
     ax.add_feature(USCOUNTIES, linewidth=0.5)
+    ax.add_feature(cfeature.OCEAN.with_scale('50m'), facecolor='lightblue')
+    ax.add_feature(cfeature.LAND.with_scale('50m'), facecolor="tan") 
+
     add_metpy_logo(fig)
 
     prod_time = f.metadata['prod_time']
@@ -84,6 +89,21 @@ def plot_radar_level3(file_obj):
     plt.savefig(out_path, bbox_inches='tight')
     plt.close(fig)
     print(f"Radar map saved to {out_path}")
+    cities = {
+    "Mobile": (-88.0399, 30.6954),
+    "Pensacola": (-87.2169, 30.4213),
+    "Milton": (-87.0400, 30.6324),
+    "Navarre": (-86.8650, 30.4016),
+    "Brewton": (-87.0725, 31.1052),
+    "Atmore": (-87.4961, 31.0235)
+}
+
+# Plot city markers
+    for city, (lon, lat) in cities.items():
+     ax.plot(lon, lat, 'ro', markersize=5, transform=ccrs.PlateCarree())  # red dot
+     ax.text(lon + 0.05, lat + 0.05, city, fontsize=9, transform=ccrs.PlateCarree(),
+            ha='left', va='bottom', color='black', weight='bold',
+            path_effects=[plt.matplotlib.patheffects.withStroke(linewidth=2, foreground="white")])
 
 
 
