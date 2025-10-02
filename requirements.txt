@@ -7,3 +7,4 @@ pint
 pytz
 setuptools
 wheel
+geopandas
