@@ -161,7 +161,7 @@ try:
     # -------------------------------
     # Step 9: Save and show
     # -------------------------------
-    plt.savefig("tropics_outlook.png", dpi=100, bbox_inches='tight')
+    plt.savefig("tropics_outlook.png", dpi=100, bbox_inches='tight', overwrite=True)
     plt.show()
 
 finally:
