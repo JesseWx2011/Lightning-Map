@@ -52,7 +52,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/radar_maps/KMOB.gif
+          git add docs/radar_maps/MOB.gif
           git commit -m "Update radar gif" || echo "No changes to commit"
           git pull --rebase origin master
           git push origin HEAD:master
