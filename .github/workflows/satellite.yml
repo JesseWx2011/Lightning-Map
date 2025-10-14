@@ -44,11 +44,11 @@ jobs:
           pip install -r requirements.txt
 
       # 5️⃣ Run radar map script
-      - name: Generate Radar Map
+      - name: Generate Satellite Map
         run: python scripts/satellite.py
 
       # 6️⃣ Commit and push radar map
-      - name: Commit and push radar map
+      - name: Commit and push satellite map
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
