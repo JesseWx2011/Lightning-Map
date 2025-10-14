@@ -45,7 +45,7 @@ jobs:
 
       # 5️⃣ Run radar map script
       - name: Generate Radar Map
-        run: python scripts/radarmap.py
+        run: python scripts/satellite.py
 
       # 6️⃣ Commit and push radar map
       - name: Commit and push radar map
