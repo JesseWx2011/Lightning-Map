@@ -8,3 +8,4 @@ pytz
 setuptools
 wheel
 geopandas
+goes2go
