@@ -77,8 +77,8 @@ def rounded_rect(x, y, width, height, radius=0.05):
 def fetch_spc_geojson(day_number):
     """Fetch SPC outlook GeoJSON data."""
     urls = {
-        1: "https://www.spc.noaa.gov/products/outlook/archive/2021/day1otlk_20210325_1200_cat.nolyr.geojson",
-        2: "https://www.spc.noaa.gov/products/outlook/archive/2021/day2otlk_20210325_0600_cat.nolyr.geojson",
+        1: "https://www.spc.noaa.gov/products/outlook/day1otlk_cat.lyr.geojson",
+        2: "https://www.spc.noaa.gov/products/outlook/day2otlk_cat.lyr.geojson",
         3: "https://www.spc.noaa.gov/products/outlook/day3otlk_cat.lyr.geojson"
     }
     
@@ -255,7 +255,7 @@ def create_spc_outlook_map(day_number, date_str, output_filename):
                  path_effects=[shadow], zorder=2)
     
     # Add data courtesy text
-    title_ax.text(0.97, 0.45, 'Dangerous Severe Weather Expected',
+    title_ax.text(0.97, 0.45, 'Data courtesy of Storm Prediction Center',
                  fontsize=20, fontweight='black', color='white',
                  family='rubik', va='center', ha='right',
                  path_effects=[withStroke(linewidth=3, foreground='black', alpha=0.6)],
