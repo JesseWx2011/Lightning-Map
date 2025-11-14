@@ -136,7 +136,7 @@ def plot_outlook_polygons(ax, geojson_data):
                 lats = [coord[1] for coord in coords]
                 
                 # Plot filled polygon
-                ax.fill(lons, lats, color=fill_color, alpha=1,
+                ax.fill(lons, lats, color=fill_color, alpha=0.6,
                        transform=ccrs.PlateCarree(), zorder=3)
                 # Plot outline
                 ax.plot(lons, lats, color=stroke_color, linewidth=2,
@@ -195,12 +195,8 @@ def create_spc_outlook_map(day_number, date_str, output_filename):
         'Pittsburgh': (40.4406, -79.9959),
         'Lansing': (42.7325, -84.5555),
         'Int Falls': (48.6013, -93.4109),
+        'Des Moines': (41.6005, -93.6091),
         'Nashville': (36.1627, -86.7816),
-        'Raleigh': (35.7796147,-78.6382289),
-        'Minneapolis': (44.9781992,-93.2655499),
-        'Portland': (45.5162725,-122.6790384),
-        'SLC': (40.7605515,-111.8881965),
-        'Buffalo': (42.8870435,-78.8790953),
         'Kansas City': (39.0997, -94.5786),
         'Omaha': (41.2565, -95.9345),
         'Houston': (29.7604, -95.3698),
@@ -221,7 +217,7 @@ def create_spc_outlook_map(day_number, date_str, output_filename):
                transform=ccrs.PlateCarree(), zorder=6)
         ax.text(lon, lat, f'  {city_name}', fontsize=12, 
                color='black', fontweight='bold',
-               transform=ccrs.PlateCarree(), zorder=6, family='roboto',
+               transform=ccrs.PlateCarree(), zorder=6,
                bbox=dict(boxstyle='round,pad=0.3', facecolor='white', 
                         edgecolor='none', alpha=0.0))
     
@@ -229,11 +225,13 @@ def create_spc_outlook_map(day_number, date_str, output_filename):
     shadow = withStroke(linewidth=5, foreground='black', alpha=0.7)
     
     # ABSOLUTE POSITIONED TITLE BANNER - at top
-    title_ax = fig.add_axes([0.02, 0.89, 0.78, 0.14], zorder=100)
+    title_ax = fig.add_axes([0.02, 0.89, 0.78, 0.10], zorder=100)
     title_ax.set_xlim(0, 1)
     title_ax.set_ylim(0, 1)
     title_ax.axis('off')
     
+    # Add gray background with rounded corners
+    # Create rounded rectangle path (radius = 0.03 for nice rounded corners)
     header_path = rounded_rect(0, 0, 1, 1, radius=0.03)
     header_patch = PathPatch(header_path, 
                              facecolor='#5A5A5A',
@@ -245,17 +243,17 @@ def create_spc_outlook_map(day_number, date_str, output_filename):
     # Add title text
     title_ax.text(0.03, 0.65, 'Severe Weather Outlook',
                  fontsize=39, fontweight='black', color='white',
-                 family='montserrat', va='center',
+                 family='rubik', va='center',
                  path_effects=[shadow], zorder=2)
     
     # Add date text
-    title_ax.text(0.03, 0.25, f'Outlook For {date_str}',
-                 fontsize=30, fontweight='semibold', color='white',
-                 family='roboto', va='center', style='italic',
+    title_ax.text(0.03, 0.25, f'{date_str}',
+                 fontsize=30, fontweight='black', color='white',
+                 family='rubik', va='center', style='italic',
                  path_effects=[shadow], zorder=2)
     
     # Add data courtesy text
-    title_ax.text(0.97, 0.45, 'Data courtesy of Storm Prediction Center',
+    title_ax.text(0.97, 0.45, 'Data Courtesy of Storm Prediction Center',
                  fontsize=20, fontweight='black', color='white',
                  family='rubik', va='center', ha='right',
                  path_effects=[withStroke(linewidth=3, foreground='black', alpha=0.6)],
@@ -325,6 +323,11 @@ def create_spc_outlook_map(day_number, date_str, output_filename):
 # Example usage - create maps for Day 1, 2, and 3
 if __name__ == "__main__":
     from datetime import datetime, timedelta
+    import os
+    
+    # Create output directory if it doesn't exist
+    output_dir = "docs/spc"
+    os.makedirs(output_dir, exist_ok=True)
     
     # Get current date and next two days
     today = datetime.now()
@@ -333,12 +336,12 @@ if __name__ == "__main__":
     day3_date = (today + timedelta(days=2)).strftime("%m/%d/%Y")
     
     # Create Day 1 outlook
-    create_spc_outlook_map(1, day1_date, "spc1.png")
+    create_spc_outlook_map(1, day1_date, f"{output_dir}/spc1.png")
     
     # Create Day 2 outlook
-    create_spc_outlook_map(2, day2_date, "spc2.png")
+    create_spc_outlook_map(2, day2_date, f"{output_dir}/spc2.png")
     
     # Create Day 3 outlook
-    create_spc_outlook_map(3, day3_date, "spc3.png")
+    create_spc_outlook_map(3, day3_date, f"{output_dir}/spc3.png")
     
     print("\nAll SPC outlook maps created successfully!")
