@@ -60,7 +60,7 @@ def main() -> None:
         width, height = img.size
         
         # Top Left: Processed Timestamp
-        draw_text_with_outline(draw, (15, 15), f"Processed: {timestamp}", font)
+        draw_text_with_outline(draw, (15, 15), f"{timestamp}", font)
         
         # Bottom Left: Temperature
         draw_text_with_outline(draw, (15, height - 35), temp_string, font)
