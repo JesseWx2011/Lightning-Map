@@ -34,7 +34,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add docs/latest_weather_stamped.jpg
+          git add docs/Latest.jpg
           # The 'exit 0' prevents the job from failing if there are no image changes
           git commit -m "Update weather image: $(date)" || exit 0
           git push
