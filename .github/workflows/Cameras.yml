@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests Pillow
+          pip install requests Pillow pytz
 
       - name: Produce Camera Images
         run: python ./scripts/CameraScript.py
