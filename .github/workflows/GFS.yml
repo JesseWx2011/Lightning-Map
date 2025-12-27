@@ -24,10 +24,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r ./requirements.txt
+          pip install -r /requirements.txt
 
       - name: Produce GFS Model Images
-        run: python ./scripts/GFSScript.py
+        run: python /scripts/GFSScript.py
 
       - name: Commit model images and docs
         run: |
