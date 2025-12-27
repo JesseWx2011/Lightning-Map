@@ -9,3 +9,5 @@ setuptools
 wheel
 geopandas
 goes2go
+imageio
+herbie
