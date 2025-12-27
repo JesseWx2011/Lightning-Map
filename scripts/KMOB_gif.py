@@ -136,9 +136,9 @@ def plot_radar_level3(file_obj, key):
 
     # Map Features
     ax.add_feature(USCOUNTIES, linewidth=0.5)
-    ax.add_feature(cfeature.OCEAN.with_scale('50m'), facecolor='lightblue')
-    ax.add_feature(cfeature.LAND.with_scale('50m'), facecolor="tan") 
-    ax.add_feature(cfeature.STATES.with_scale('50m'), linestyle=':', edgecolor='gray', linewidth=1)
+    ax.add_feature(cfeature.OCEAN.with_scale('10m'), facecolor='lightblue')
+    ax.add_feature(cfeature.LAND.with_scale('10m'), facecolor="tan") 
+    ax.add_feature(cfeature.STATES.with_scale('10m'), linestyle=':', edgecolor='gray', linewidth=1)
 
     # City markers (Complete list, but plotting is filtered)
     cities = {
