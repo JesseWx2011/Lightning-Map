@@ -13,3 +13,4 @@ imageio
 herbie
 fastapi
 uvicorn
+gunicorn
