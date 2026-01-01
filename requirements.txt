@@ -11,3 +11,5 @@ geopandas
 goes2go
 imageio
 herbie
+fastapi
+uvicorn
