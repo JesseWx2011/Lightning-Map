@@ -310,7 +310,7 @@ def create_spc_outlook_map(day_number, date_str, output_filename):
     copyright_ax.set_ylim(0, 1)
     copyright_ax.axis('off')
     
-    copyright_ax.text(0, 0.5, '©2025 @jesseweatherz',
+    copyright_ax.text(0, 0.5, '©2024-2026 @JesseLikesWeather',
                      fontsize=26, fontweight='black', color='#666666',
                      ha='left', va='center', family='sans-serif',
                      path_effects=[withStroke(linewidth=2, foreground='white', alpha=0.8)])
