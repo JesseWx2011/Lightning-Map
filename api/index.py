@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler
 import os
+import psycopg2
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
