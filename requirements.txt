@@ -11,3 +11,4 @@ geopandas
 goes2go
 imageio
 herbie
+psycopg2-binary
