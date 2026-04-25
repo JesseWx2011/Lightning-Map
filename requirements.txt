@@ -10,5 +10,5 @@ wheel
 geopandas
 goes2go
 imageio
-herbie
-psycopg2-binary
+herbie==1.0b2
+psycopg2-binary==2.9.12
