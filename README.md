@@ -1,2 +1,1 @@
-# Lightning-Map
-Lightning Map Updating Every 15 minutes
+This repository is planned to be made private soon.
